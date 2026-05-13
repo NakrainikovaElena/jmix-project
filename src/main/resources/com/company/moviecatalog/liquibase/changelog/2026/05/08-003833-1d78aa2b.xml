@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+                      http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd"
+        objectQuotingStrategy="QUOTE_ONLY_RESERVED_WORDS">
+    <changeSet id="1" author="MovieCatalog">
+        <createTable tableName="ACTOR">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_ACTOR"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="2" author="MovieCatalog">
+        <createTable tableName="DIRECTOR">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_DIRECTOR"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="3" author="MovieCatalog">
+        <createTable tableName="FEEDBACK">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FEEDBACK"/>
+            </column>
+            <column name="FEEDBACK" type="VARCHAR(255)"/>
+            <column name="FILM_ID" type="UUID"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="4" author="MovieCatalog">
+        <createTable tableName="FILM">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILM"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="RELEASE_YEAR" type="INT"/>
+            <column name="DESCRIPTION" type="VARCHAR(500)"/>
+            <column name="RATING" type="DECIMAL(3, 1)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="5" author="MovieCatalog">
+        <createTable tableName="FILM_ACTOR_LINK">
+            <column name="ACTOR_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILM_ACTOR_LINK"/>
+            </column>
+            <column name="FILM_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILM_ACTOR_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="6" author="MovieCatalog">
+        <createTable tableName="FILM_DIRECTOR_LINK">
+            <column name="DIRECTOR_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILM_DIRECTOR_LINK"/>
+            </column>
+            <column name="FILM_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILM_DIRECTOR_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="7" author="MovieCatalog">
+        <createTable tableName="FILM_GENRE_LINK">
+            <column name="FILM_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILM_GENRE_LINK"/>
+            </column>
+            <column name="GENRE_ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_FILM_GENRE_LINK"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet id="8" author="MovieCatalog">
+        <createTable tableName="GENRE">
+            <column name="ID" type="UUID">
+                <constraints nullable="false" primaryKey="true" primaryKeyName="PK_GENRE"/>
+            </column>
+            <column name="NAME" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet id="9" author="MovieCatalog">
+        <createIndex indexName="IDX_FEEDBACK_FILM" tableName="FEEDBACK">
+            <column name="FILM_ID"/>
+        </createIndex>
+
+        <addForeignKeyConstraint baseColumnNames="FILM_ID" baseTableName="FEEDBACK" constraintName="FK_FEEDBACK_ON_FILM"
+                                 referencedColumnNames="ID" referencedTableName="FILM"/>
+    </changeSet>
+    <changeSet id="10" author="MovieCatalog">
+        <addForeignKeyConstraint baseColumnNames="ACTOR_ID" baseTableName="FILM_ACTOR_LINK"
+                                 constraintName="FK_FILACT_ON_ACTOR" referencedColumnNames="ID"
+                                 referencedTableName="ACTOR"/>
+    </changeSet>
+    <changeSet id="11" author="MovieCatalog">
+        <addForeignKeyConstraint baseColumnNames="FILM_ID" baseTableName="FILM_ACTOR_LINK"
+                                 constraintName="FK_FILACT_ON_FILM" referencedColumnNames="ID"
+                                 referencedTableName="FILM"/>
+    </changeSet>
+    <changeSet id="12" author="MovieCatalog">
+        <addForeignKeyConstraint baseColumnNames="DIRECTOR_ID" baseTableName="FILM_DIRECTOR_LINK"
+                                 constraintName="FK_FILDIR_ON_DIRECTOR" referencedColumnNames="ID"
+                                 referencedTableName="DIRECTOR"/>
+    </changeSet>
+    <changeSet id="13" author="MovieCatalog">
+        <addForeignKeyConstraint baseColumnNames="FILM_ID" baseTableName="FILM_DIRECTOR_LINK"
+                                 constraintName="FK_FILDIR_ON_FILM" referencedColumnNames="ID"
+                                 referencedTableName="FILM"/>
+    </changeSet>
+    <changeSet id="14" author="MovieCatalog">
+        <addForeignKeyConstraint baseColumnNames="FILM_ID" baseTableName="FILM_GENRE_LINK"
+                                 constraintName="FK_FILGEN_ON_FILM" referencedColumnNames="ID"
+                                 referencedTableName="FILM"/>
+    </changeSet>
+    <changeSet id="15" author="MovieCatalog">
+        <addForeignKeyConstraint baseColumnNames="GENRE_ID" baseTableName="FILM_GENRE_LINK"
+                                 constraintName="FK_FILGEN_ON_GENRE" referencedColumnNames="ID"
+                                 referencedTableName="GENRE"/>
+    </changeSet>
+</databaseChangeLog>
